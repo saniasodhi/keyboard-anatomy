@@ -1939,3 +1939,24 @@ fieldset {
     letter-spacing: 0.16em;
   }
 }
+.hint {
+  white-space: nowrap;
+  max-width: none;
+}
+
+/* dev-only screenshot mode (?shot=…): a fixed 1600×900 frame */
+html.shot-mode .app {
+  inset: auto;
+  left: 0;
+  top: 0;
+  width: 1600px;
+  height: 900px;
+  overflow: hidden;
+}
+html.shot-mode *,
+html.shot-mode *::before,
+html.shot-mode *::after {
+  transition-duration: 0s !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+}

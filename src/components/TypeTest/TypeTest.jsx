@@ -109,7 +109,8 @@ export function TypeTest() {
         s.setTypeStage('done')
         s.setTyped('')
         flyTo(SHOTS.hero, s.reducedMotion, 1.4)
-        setTimeout(() => setShowEnd(true), 2500)
+        const id = run.current
+        setTimeout(() => run.current === id && setShowEnd(true), 2500)
       }
       // stop Space/Enter from re-triggering whatever control still has focus; Tab keeps moving focus
       if (e.code === 'Space' || e.code === 'Enter' || e.code === 'NumpadEnter' || e.code.startsWith('Arrow')) e.preventDefault()

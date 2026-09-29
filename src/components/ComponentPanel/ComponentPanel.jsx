@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { COMPONENTS, COMPONENT_BY_ID, CATEGORIES, LABEL_TO_ID } from '../../data/keyboardComponents'
 import { SYSTEMS } from '../../data/signalSteps'
-import { useStore, flyTo, EXPLODED_VIEW, DEFAULT_VIEW } from '../../store/useStore'
+import { useStore } from '../../store/useStore'
 import { IconArrow, IconClose } from '../UI/Icons'
 import { itemNo } from '../ComponentList/ComponentList'
 
@@ -107,8 +107,6 @@ function SystemInfo({ sys }) {
 export function ComponentPanel() {
   const selected = useStore((s) => s.selected)
   const system = useStore((s) => s.system)
-  const select = useStore((s) => s.select)
-  const selectSystem = useStore((s) => s.selectSystem)
   const scroller = useRef()
   const c = selected && COMPONENT_BY_ID[selected]
   const sys = system && SYSTEMS.find((x) => x.id === system)
@@ -119,19 +117,15 @@ export function ComponentPanel() {
   }, [selected, system])
 
   // Closing always returns the camera to an overview of the current state
-  const close = () => {
-    const st = useStore.getState()
-    st.clearSelection()
-    flyTo(st.explode > 0.3 ? EXPLODED_VIEW : DEFAULT_VIEW, st.reducedMotion)
-  }
+  const close = () => useStore.getState().closeSelection()
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape' && open && !useStore.getState().customizeOpen) close()
+      if (e.key === 'Escape' && open && !useStore.getState().customizeOpen) useStore.getState().closeSelection()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [open, select, selectSystem])
+  }, [open])
 
   return (
     <aside className={`info panel ${open ? 'is-open' : ''}`} aria-label="Part details" aria-hidden={!open} inert={!open}>

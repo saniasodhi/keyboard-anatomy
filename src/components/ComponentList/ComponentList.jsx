@@ -49,7 +49,7 @@ export function ComponentList() {
                     <button
                       className={`part ${selected === c.id ? 'is-on' : ''}`}
                       aria-current={selected === c.id ? 'true' : undefined}
-                      onClick={() => click(() => select(selected === c.id ? null : c.id))}
+                      onClick={() => click(() => (selected === c.id ? useStore.getState().closeSelection() : select(c.id)))}
                     >
                       <span className="part__no">{itemNo(c.id)}</span>
                       <span className="part__name">{c.name}</span>

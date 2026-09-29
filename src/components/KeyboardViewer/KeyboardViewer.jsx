@@ -4,7 +4,7 @@ import { CameraControls, PerformanceMonitor, AdaptiveDpr } from '@react-three/dr
 import { EffectComposer, N8AO, Outline, Selection, Bloom, ToneMapping, SMAA, Vignette, DepthOfField } from '@react-three/postprocessing'
 import { ToneMappingMode, KernelSize } from 'postprocessing'
 import * as THREE from 'three'
-import { useStore, cameraRig, DEFAULT_VIEW, EXPLODED_VIEW, INTRO_VIEW, flyTo, isHeroIdle, viewScale } from '../../store/useStore'
+import { useStore, cameraRig, DEFAULT_VIEW, INTRO_VIEW, flyTo, isHeroIdle, viewScale } from '../../store/useStore'
 import { KeyboardModel } from '../KeyboardModel/KeyboardModel'
 import { StudioScene } from '../../scenes/StudioScene'
 
@@ -172,7 +172,6 @@ function Ready({ onReady }) {
 export function KeyboardViewer({ onReady, onLost }) {
   const lowPower = useStore((s) => s.lowPower)
   const setLowPower = useStore((s) => s.setLowPower)
-  const select = useStore((s) => s.select)
 
   return (
     <Canvas
@@ -184,10 +183,7 @@ export function KeyboardViewer({ onReady, onLost }) {
       onPointerMissed={(e) => {
         const s = useStore.getState()
         if (s.sheet === 'list') s.setSheet(null)
-        if (e.type === 'click' && s.mode === 'explore' && (s.selected || s.system)) {
-          select(null)
-          flyTo(s.explode > 0.3 ? EXPLODED_VIEW : DEFAULT_VIEW, s.reducedMotion)
-        }
+        if (e.type === 'click' && s.mode === 'explore' && (s.selected || s.system)) s.closeSelection()
       }}
       aria-label="Interactive 3D model of a mechanical keyboard. Drag to rotate, scroll to zoom."
       onCreated={({ gl, scene }) => {

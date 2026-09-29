@@ -80,6 +80,13 @@ export const useStore = create((set, get) => ({
     set({ selected: null, system: null, sheet: s.sheet === 'info' ? null : s.sheet })
   },
 
+  // Deselect and pull the camera back to an overview of whatever state the keyboard is in
+  closeSelection: () => {
+    const s = get()
+    s.clearSelection()
+    flyTo(s.explode > 0.3 ? EXPLODED_VIEW : DEFAULT_VIEW, s.reducedMotion)
+  },
+
   select: (id) => {
     const s = get()
     if (!id) {
@@ -221,5 +228,31 @@ if (typeof window !== 'undefined' && import.meta.env.DEV) {
     const k = viewScale()
     const pos = v.pos.map((p, i) => v.target[i] + (p - v.target[i]) * k)
     cameraRig.controls.setLookAt(...pos, ...v.target, false)
+  }
+}
+
+// Dev helper for README screenshots: ?shot=hero|exploded|switch|matrix jumps straight to a finished frame
+if (typeof window !== 'undefined' && import.meta.env.DEV) {
+  const shot = new URLSearchParams(location.search).get('shot')
+  if (shot) {
+    useStore.setState({ phase: 'ready', introAt: performance.now() / 1000 - 100 })
+    const apply = () => {
+      const c = cameraRig.controls
+      if (!c) return setTimeout(apply, 100)
+      cameraRig.lastInteraction = performance.now() + 1e9
+      const snap = (v) => {
+        const k = viewScale()
+        c.setLookAt(...v.pos.map((p, i) => v.target[i] + (p - v.target[i]) * k), ...v.target, false)
+      }
+      if (shot === 'hero') snap(DEFAULT_VIEW)
+      if (shot === 'exploded') {
+        useStore.getState().setExplode(1)
+        snap(EXPLODED_VIEW)
+      }
+      if (shot === 'switch' || shot === 'matrix') window.__show(shot === 'switch' ? 'switches' : 'matrix')
+    }
+    setTimeout(apply, 300)
+    // headless windows report their outer size late, so pin the stage to an exact frame for capture
+    document.documentElement.classList.add('shot-mode')
   }
 }
