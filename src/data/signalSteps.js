@@ -1,0 +1,138 @@
+// The guided "How it works" narrative: one keystroke, finger to screen.
+export const SIGNAL_STEPS = [
+  {
+    id: 'power',
+    verb: 'Power',
+    title: 'Power comes in',
+    body:
+      'Before any key can work, the keyboard needs power. It arrives through the USB-C cable or from the internal battery, and the power system turns it into a steady supply for the PCB.',
+    chain: ['USB-C / Battery', 'Power system', 'PCB'],
+    parts: ['usb', 'wiring', 'battery', 'power', 'pcb'],
+    explode: 0.8,
+    view: { p: [-2.6, -2.4, -1.6], dir: [0.3, 0.42, 0.86], dist: 17 },
+    fx: 'power',
+  },
+  {
+    id: 'press',
+    verb: 'Press',
+    title: 'You press a key',
+    body:
+      'Your finger pushes the keycap down. The keycap is only a cover: the force goes straight into the switch stem underneath it.',
+    chain: ['Finger', 'Keycap', 'Switch'],
+    parts: ['keycaps', 'switches'],
+    explode: 0,
+    view: { part: 'keycaps', p: [0.25, 0.8, 0.62], dir: [0.5, 0.55, 0.8], dist: 5.5 },
+    fx: 'press',
+  },
+  {
+    id: 'actuate',
+    verb: 'Actuate',
+    title: 'The switch actuates',
+    body:
+      'Inside the switch the stem slides down and compresses the spring. Partway through its travel, two metal contacts touch. The switch has changed electrical state: a mechanical movement just became a signal.',
+    chain: ['Stem moves', 'Spring compresses', 'Contacts close'],
+    parts: ['switches'],
+    explode: 0,
+    view: { part: 'switches', p: [0.28, 0.08, 0.62], dir: [0.55, 0.45, 0.8], dist: 2.7 },
+    fx: 'actuate',
+  },
+  {
+    id: 'detect',
+    verb: 'Detect',
+    title: 'The matrix is scanned',
+    body:
+      'Switches are wired in a grid of rows and columns. The controller powers one row at a time and listens on every column. When a column answers, the crossing point identifies the pressed key.',
+    chain: ['Row', 'Switch', 'Column'],
+    parts: ['keyMatrix', 'pcb'],
+    explode: 0.82,
+    view: { part: 'pcb', p: [0.4, -0.27, 0.3], dir: [0.12, 0.62, 0.78], dist: 14.5 },
+    fx: 'detect',
+  },
+  {
+    id: 'process',
+    verb: 'Process',
+    title: 'The controller decides',
+    body:
+      'The controller confirms the press is real and not contact bounce, looks up which key sits at that row and column in its keymap, and turns it into a standard key code.',
+    chain: ['Key matrix', 'Controller', 'Key code'],
+    parts: ['controller', 'keyMatrix', 'pcb'],
+    explode: 0.82,
+    view: { part: 'controller', p: [0.6, 0.2, -0.8], dir: [0.45, -0.55, 0.7], dist: 10 },
+    fx: 'process',
+  },
+  {
+    id: 'transmit',
+    verb: 'Transmit',
+    title: 'The key code leaves',
+    body:
+      'The key code travels to your computer: down the USB-C cable when wired, or through the radio module and antenna when wireless. Either way it arrives as a standard keyboard report your computer already understands.',
+    chain: ['Controller', 'USB / Wireless', 'Computer'],
+    parts: ['controller', 'usb', 'wiring', 'wireless', 'antenna', 'pcb'],
+    explode: 0.8,
+    view: { p: [0.8, -2.2, -2.2], dir: [0.18, -0.62, 0.76], dist: 17 },
+    fx: 'transmit',
+  },
+  {
+    id: 'display',
+    verb: 'Display',
+    title: 'A character appears',
+    body:
+      'Your computer’s operating system receives the key code and hands it to the app you’re typing in, which draws the character on screen. All of this happens in a few thousandths of a second.',
+    chain: ['Press', 'Switch', 'Matrix', 'Controller', 'Computer', 'Character'],
+    parts: [],
+    explode: 0,
+    view: { pos: [-15.2, 16.2, 33.4], target: [0, -0.9, 0.3] },
+    fx: 'display',
+  },
+]
+
+export const SYSTEMS = [
+  {
+    id: 'structure',
+    name: 'Case & hardware',
+    chain: ['Keycaps', 'Switches', 'Plate', 'Case'],
+    parts: ['keycaps', 'switches', 'plate', 'topCase', 'bottomCase', 'gaskets', 'stabilizers', 'feet'],
+    explode: 0.6,
+    description: 'The physical stack that turns a finger press into a controlled, repeatable movement.',
+  },
+  {
+    id: 'input',
+    name: 'Input',
+    chain: ['Switch', 'Matrix', 'PCB'],
+    parts: ['switches', 'keyMatrix', 'pcb', 'sockets'],
+    explode: 0.8,
+    description: 'Where each press becomes an electrical change the board can read.',
+  },
+  {
+    id: 'computation',
+    name: 'Computation',
+    chain: ['Matrix', 'Controller'],
+    parts: ['keyMatrix', 'controller'],
+    explode: 0.82,
+    description: 'The controller scans the matrix and decides which keys are down.',
+  },
+  {
+    id: 'connectivity',
+    name: 'Connectivity',
+    chain: ['Controller', 'USB / Wireless', 'Computer'],
+    parts: ['controller', 'usb', 'wiring', 'wireless', 'antenna'],
+    explode: 0.8,
+    description: 'Two routes to your computer: a cable or a radio link.',
+  },
+  {
+    id: 'power',
+    name: 'Power',
+    chain: ['USB / Battery', 'Power system', 'PCB'],
+    parts: ['usb', 'battery', 'power', 'wiring', 'pcb'],
+    explode: 0.8,
+    description: 'Energy in from a cable or cell, regulated for every chip.',
+  },
+  {
+    id: 'acoustics',
+    name: 'Acoustics',
+    chain: ['Switch', 'Plate', 'Foam', 'Case', 'Sound'],
+    parts: ['switches', 'plate', 'plateFoam', 'caseFoam', 'gaskets', 'bottomCase'],
+    explode: 0.6,
+    description: 'The path a keystroke’s vibration takes before it reaches your ears.',
+  },
+]

@@ -1,0 +1,61 @@
+:root {
+  color-scheme: only light;
+  /* palette */
+  --paper: #e9eced;
+  --paper-hi: #f6f7f7;
+  --ink: #1a1d20;
+  --ink-2: #555c62;
+  --ink-3: #868d93;
+  --alloy: #dedbd4;
+  --signal: #19a7c6;
+  --signal-ink: #0b7591;
+  --signal-wash: rgba(25, 167, 198, 0.1);
+  --hair: rgba(26, 29, 32, 0.1);
+  --hair-strong: rgba(26, 29, 32, 0.18);
+  --panel: rgba(248, 249, 249, 0.8);
+  --panel-solid: #f7f8f8;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 12px 40px -18px rgba(28, 38, 46, 0.28), 0 2px 6px -2px rgba(28, 38, 46, 0.08);
+
+  /* type */
+  --f-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --f-serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --f-body: 'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* scale */
+  --t-micro: 10.5px;
+  --t-label: 11.5px;
+  --t-body: 14.5px;
+  --t-lead: 16px;
+  --t-h3: 20px;
+  --t-h2: 28px;
+  --t-h1: 44px;
+
+  /* layout */
+  --gutter: 22px;
+  --rail-w: 292px;
+  --info-w: 380px;
+  --header-h: 76px;
+  --radius: 16px;
+  --radius-s: 10px;
+
+  /* motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur: 0.45s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur: 0.01s;
+  }
+}
+
+@media (max-width: 820px) {
+  :root {
+    --gutter: 14px;
+    --header-h: 60px;
+    --t-h1: 32px;
+    --t-h2: 24px;
+  }
+}
